@@ -10,6 +10,7 @@ use Filament\Pages\Dashboard;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
+use Filament\Support\Enums\Width;
 use Filament\Widgets\AccountWidget;
 use Filament\Widgets\FilamentInfoWidget;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
@@ -26,10 +27,13 @@ class AdminPanelProvider extends PanelProvider
         return $panel
             ->default()
             ->id('admin')
-            ->path('admin')
+            ->path('')
             ->login()
             ->colors([
-                'primary' => Color::Amber,
+                'primary' => Color::generateV3Palette('#0071BC'),
+                'success' => Color::generateV3Palette('#00903cff'),
+                'danger' => Color::generateV3Palette('#d93636ff'),
+                'warning' => Color::generateV3Palette('#f59f00ff'),
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')
@@ -54,6 +58,14 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-            ]);
+            ])
+
+            ->readOnlyRelationManagersOnResourceViewPagesByDefault(false)
+            ->globalSearch(false)
+            ->maxContentWidth(Width::Full)
+            ->favicon(asset('images/favicon.png'))
+            ->brandLogo(asset('images/logo.png'))
+            ->brandLogoHeight('50px')
+            ->darkMode(false);
     }
 }
